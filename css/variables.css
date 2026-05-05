@@ -1,0 +1,73 @@
+/* ============================================
+   CSS VARIABLES - 2026 Design System
+   ============================================ */
+
+:root {
+    /* Modern 2026 Color Palette - Neon meets Corporate */
+    --primary-cyber: #00f0ff;
+    --primary-purple: #b721ff;
+    --primary-gradient: linear-gradient(135deg, #00f0ff 0%, #b721ff 100%);
+    --dark-bg: #0a0a0f;
+    --card-bg: rgba(18, 18, 27, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b0;
+    --text-accent: #00f0ff;
+    --success-neon: #00ff88;
+    --error-neon: #ff3366;
+    --warning-neon: #ffb700;
+    
+    /* Glassmorphism */
+    --glass-blur: 12px;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border-light: rgba(255, 255, 255, 0.1);
+    
+    /* Spacing - Fluid scale */
+    --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+    --space-sm: clamp(0.75rem, 2vw, 1rem);
+    --space-md: clamp(1rem, 3vw, 1.5rem);
+    --space-lg: clamp(1.5rem, 4vw, 2rem);
+    --space-xl: clamp(2rem, 5vw, 3rem);
+    --space-2xl: clamp(3rem, 8vw, 5rem);
+    
+    /* Typography - Fluid */
+    --text-xs: clamp(0.75rem, 1.5vw, 0.875rem);
+    --text-sm: clamp(0.875rem, 2vw, 1rem);
+    --text-base: clamp(1rem, 2.5vw, 1.125rem);
+    --text-lg: clamp(1.125rem, 3vw, 1.25rem);
+    --text-xl: clamp(1.25rem, 4vw, 1.5rem);
+    --text-2xl: clamp(1.5rem, 5vw, 2rem);
+    --text-3xl: clamp(2rem, 6vw, 2.5rem);
+    --text-4xl: clamp(2.5rem, 8vw, 3.5rem);
+    
+    /* Animations */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Layout */
+    --container-width: 1400px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 20px;
+    --border-radius-xl: 28px;
+}
+
+/* Dark mode base */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dark-bg: #0a0a0f;
+        --card-bg: rgba(18, 18, 27, 0.9);
+    }
+}
+
+/* Light mode override (optional) */
+@media (prefers-color-scheme: light) {
+    :root {
+        --dark-bg: #f5f5f7;
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --text-primary: #1a1a2e;
+        --text-secondary: #4a4a5a;
+        --glass-bg: rgba(0, 0, 0, 0.03);
+    }
+}

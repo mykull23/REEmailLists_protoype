@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans | Real Estate Email Lists</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f5f7fa;
+            color: #1a1a2e;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a4d8c;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #f4a261;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 3rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        /* Billing Toggle */
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #1a4d8c;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .save-badge {
+            background: #28a745;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Pricing Cards */
+        .pricing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            border: 1px solid #e5e5e5;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #1a4d8c;
+            transform: scale(1.02);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.02) translateY(-4px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #1a4d8c;
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            margin: 1rem 0;
+        }
+
+        .price .currency {
+            font-size: 1.2rem;
+            vertical-align: top;
+        }
+
+        .price .amount {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #1a4d8c;
+        }
+
+        .price .period {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .price-per-lead {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: -0.5rem;
+        }
+
+        .lead-count {
+            font-size: 0.9rem;
+            background: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .btn-subscribe {
+            width: 100%;
+            padding: 0.875rem;
+            background: #1a4d8c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-subscribe:hover {
+            background: #0e3a6b;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid #1a4d8c;
+            color: #1a4d8c;
+        }
+
+        .btn-outline:hover {
+            background: #1a4d8c;
+            color: white;
+        }
+
+        /* Add-Ons Section */
+        .addons-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .addons-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .addons-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .addon-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .addon-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .addon-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a4d8c;
+            margin: 0.5rem 0;
+        }
+
+        .addon-desc {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            margin-top: 3rem;
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .comparison-table th:first-child,
+        .comparison-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e5e5;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.875rem;
+            background: #1a4d8c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1100;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid #28a745;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <a href="#" class="logo">RE<span>Email</span>Lists</a>
+        <div>Premium Real Estate Leads</div>
+    </div>
+</header>
+
+<main>
+    <div class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h1>Subscription Plans</h1>
+                <p>Choose the plan that fits your business. Cancel anytime.</p>
+            </div>
+
+            <!-- Billing Toggle -->
+            <div class="billing-toggle">
+                <span>Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="billingToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>Annual <span class="save-badge">Save 17%</span></span>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="pricing-grid" id="pricingGrid"></div>
+
+            <!-- Add-Ons Section -->
+            <div class="addons-section">
+                <h2>Optional Add-Ons</h2>
+                <div class="addons-grid">
+                    <div class="addon-card">
+                        <h4>Phone Numbers</h4>
+                        <div class="addon-price">+$49<span style="font-size:0.9rem;">/month</span></div>
+                        <div class="addon-desc">Cell & landline numbers included</div>
+                    </div>
+                    <div class="addon-card">
+                        <h4>Property Ownership Data</h4>
+                        <div class="addon-price">+$79<span style="font-size:0.9rem;">/month</span></div>
+                        <div class="addon-desc">Owner name, deed date, property value</div>
+                    </div>
+                    <div class="addon-card">
+                        <h4>CRM Integration</h4>
+                        <div class="addon-price">+$149<span style="font-size:0.9rem;">/month</span></div>
+                        <div class="addon-desc">HubSpot, Salesforce, GHL</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-section">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Starter</th>
+                            <th>Professional</th>
+                            <th>Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Monthly leads</td><td>500</td><td>2,500</td><td>7,500</td></tr>
+                        <tr><td>Price per lead</td><td id="pricePerLeadStarter">$0.098</td><td id="pricePerLeadPro">$0.079</td><td id="pricePerLeadEnt">$0.066</td></tr>
+                        <tr><td>Free sample included</td><td>250</td><td>500</td><td>1,000</td></tr>
+                        <tr><td>Geographic scope</td><td>Local (City/Region)</td><td>Statewide</td><td>Nationwide</td></tr>
+                        <tr><td>Industry titles</td><td>3</td><td>15</td><td>All 60+</td></tr>
+                        <tr><td>Support</td><td>Email</td><td>Priority Email + Phone</td><td>Dedicated Account Manager</td></tr>
+                        <tr><td>Data refresh</td><td>Monthly</td><td>Bi-weekly</td><td>Weekly</td></tr>
+                        <tr><td>Custom targeting</td><td>—</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>API access</td><td>—</td><td>—</td><td>✓</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>© 2025 RealEstateEmailLists. All rights reserved.</p>
+        <p style="font-size:0.8rem; margin-top:0.5rem;">100% CAN-SPAM Compliant | Verified Data</p>
+    </div>
+</footer>
+
+<!-- Checkout Modal -->
+<div class="modal" id="checkoutModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <h3 id="modalTitle">Subscribe to Starter</h3>
+            <p id="modalPrice">$49/month</p>
+        </div>
+        <div class="modal-body">
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Business Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="company">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Target Location *</label>
+                    <input type="text" id="location" required placeholder="e.g., Austin, TX or Nationwide">
+                </div>
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" placeholder="4242 4242 4242 4242" id="cardNumber">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry</label>
+                        <input type="text" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label>CVC</label>
+                        <input type="text" placeholder="123">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" id="submitBtn">Complete Subscription →</button>
+                <p style="font-size:0.75rem; color:#6c757d; margin-top:1rem; text-align:center;">
+                    By subscribing, you agree to our Terms of Service. 
+                    You will be charged immediately. Cancel anytime.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tier configuration
+    const TIERS = {
+        starter: {
+            name: 'Starter',
+            monthlyPrice: 49,
+            annualPrice: 490, // 10 months paid (2 free)
+            leads: 500,
+            pricePerLeadMonthly: 0.098,
+            pricePerLeadAnnual: 0.082,
+            freeSample: 250,
+            features: ['Single geographic area', '3 industry titles', 'Email support', 'Monthly data refresh']
+        },
+        professional: {
+            name: 'Professional',
+            monthlyPrice: 199,
+            annualPrice: 1990,
+            leads: 2500,
+            pricePerLeadMonthly: 0.079,
+            pricePerLeadAnnual: 0.066,
+            freeSample: 500,
+            features: ['Statewide coverage', '15 industry titles', 'Priority email + phone support', 'Bi-weekly data refresh', 'Custom targeting parameters']
+        },
+        enterprise: {
+            name: 'Enterprise',
+            monthlyPrice: 499,
+            annualPrice: 4990,
+            leads: 7500,
+            pricePerLeadMonthly: 0.066,
+            pricePerLeadAnnual: 0.055,
+            freeSample: 1000,
+            features: ['Nationwide coverage', 'All 60+ industry titles', 'Dedicated account manager', 'Weekly data refresh', 'API access', 'Custom data fields']
+        }
+    };
+
+    let currentTier = 'starter';
+    let isAnnual = false;
+
+    // Render pricing cards
+    function renderPricing() {
+        const grid = document.getElementById('pricingGrid');
+        grid.innerHTML = '';
+
+        const tiers = ['starter', 'professional', 'enterprise'];
+        
+        tiers.forEach(key => {
+            const tier = TIERS[key];
+            const price = isAnnual ? tier.annualPrice : tier.monthlyPrice;
+            const monthlyDisplay = isAnnual ? (tier.annualPrice / 12).toFixed(0) : tier.monthlyPrice;
+            const pricePerLead = isAnnual ? tier.pricePerLeadAnnual : tier.pricePerLeadMonthly;
+            
+            const card = document.createElement('div');
+            card.className = `pricing-card ${key === 'professional' ? 'featured' : ''}`;
+            
+            card.innerHTML = `
+                ${key === 'professional' ? '<div class="popular-badge">Most Popular</div>' : ''}
+                <div class="card-header">
+                    <h3>${tier.name}</h3>
+                    <div class="price">
+                        <span class="currency">$</span>
+                        <span class="amount">${monthlyDisplay}</span>
+                        <span class="period">/${isAnnual ? 'month' : 'month'}</span>
+                    </div>
+                    ${isAnnual ? `<div style="font-size:0.8rem; color:#28a745;">Billed annually ($${tier.annualPrice}/year)</div>` : ''}
+                    <div class="price-per-lead">$${pricePerLead.toFixed(3)} per lead</div>
+                    <div class="lead-count">${tier.leads.toLocaleString()} leads / month</div>
+                </div>
+                <ul class="features-list">
+                    ${tier.features.map(f => `<li>${f}</li>`).join('')}
+                    <li>${tier.freeSample.toLocaleString()} free sample leads</li>
+                </ul>
+                <button class="btn-subscribe" onclick="selectTier('${key}')">
+                    ${key === 'starter' ? 'Start Free Trial' : 'Subscribe Now'}
+                </button>
+            `;
+            
+            grid.appendChild(card);
+        });
+
+        // Update comparison table price per lead
+        document.getElementById('pricePerLeadStarter').innerHTML = isAnnual ? `$${TIERS.starter.pricePerLeadAnnual.toFixed(3)}` : `$${TIERS.starter.pricePerLeadMonthly.toFixed(3)}`;
+        document.getElementById('pricePerLeadPro').innerHTML = isAnnual ? `$${TIERS.professional.pricePerLeadAnnual.toFixed(3)}` : `$${TIERS.professional.pricePerLeadMonthly.toFixed(3)}`;
+        document.getElementById('pricePerLeadEnt').innerHTML = isAnnual ? `$${TIERS.enterprise.pricePerLeadAnnual.toFixed(3)}` : `$${TIERS.enterprise.pricePerLeadMonthly.toFixed(3)}`;
+    }
+
+    // Select tier and open modal
+    function selectTier(tierKey) {
+        currentTier = tierKey;
+        const tier = TIERS[tierKey];
+        const price = isAnnual ? tier.annualPrice : tier.monthlyPrice;
+        const period = isAnnual ? 'year' : 'month';
+        
+        document.getElementById('modalTitle').innerHTML = `Subscribe to ${tier.name}`;
+        document.getElementById('modalPrice').innerHTML = `$${price}/${period}`;
+        document.getElementById('checkoutModal').classList.add('active');
+    }
+
+    // Handle form submission (simulates payment + backend)
+    async function handleSubmit(e) {
+        e.preventDefault();
+        
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const location = document.getElementById('location').value;
+        
+        if (!fullName || !email || !location) {
+            showToast('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = 'Processing...';
+        submitBtn.disabled = true;
+        
+        // Simulate API call to backend
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        const tier = TIERS[currentTier];
+        const price = isAnnual ? tier.annualPrice : tier.monthlyPrice;
+        
+        // Log subscription (would go to database)
+        const subscription = {
+            userId: 'usr_' + Date.now(),
+            tier: currentTier,
+            plan: isAnnual ? 'annual' : 'monthly',
+            price: price,
+            leadsPerMonth: tier.leads,
+            freeSample: tier.freeSample,
+            customer: { fullName, email, location },
+            startDate: new Date().toISOString(),
+            status: 'active'
+        };
+        
+        console.log('Subscription created:', subscription);
+        
+        // Store in localStorage for demo
+        localStorage.setItem('activeSubscription', JSON.stringify(subscription));
+        
+        submitBtn.innerHTML = '✓ Complete! Redirecting...';
+        
+        setTimeout(() => {
+            document.getElementById('checkoutModal').classList.remove('active');
+            showToast(`Welcome to ${tier.name}! Check your email for ${tier.freeSample} free leads.`, 'success');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            document.getElementById('checkoutForm').reset();
+        }, 1000);
+    }
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+        const existing = document.querySelector('.toast');
+        if (existing) existing.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.borderLeftColor = type === 'success' ? '#28a745' : '#dc3545';
+        toast.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span>${message}</span>
+                <button style="background:none; border:none; font-size:1.2rem; cursor:pointer; margin-left:1rem;">×</button>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        toast.querySelector('button').addEventListener('click', () => toast.remove());
+        setTimeout(() => toast.remove(), 4000);
+    }
+
+    // Event listeners
+    document.getElementById('billingToggle').addEventListener('change', (e) => {
+        isAnnual = e.target.checked;
+        renderPricing();
+    });
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+        document.getElementById('checkoutModal').classList.remove('active');
+    });
+
+    document.getElementById('checkoutModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('checkoutModal')) {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+    });
+
+    document.getElementById('checkoutForm').addEventListener('submit', handleSubmit);
+
+    // Initial render
+    renderPricing();
+
+    // Simulate email delivery function (would be backend)
+    function simulateEmailDelivery(subscription) {
+        console.log(`📧 Sending ${subscription.freeSample} free leads to ${subscription.customer.email}`);
+        console.log(`📧 Delivering ${subscription.leadsPerMonth} monthly leads to ${subscription.customer.email}`);
+        // In production: Send via SendGrid, AWS SES, etc.
+    }
+</script>
+
+</body>
+</html>
