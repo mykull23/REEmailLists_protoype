@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Resources | Complete Real Estate Email Lists Database 📚</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        .resources-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 120px 20px 60px;
+            text-align: center;
+            color: white;
+        }
+        
+        .resources-hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px; }
+        .resources-hero p { font-size: 1.2rem; opacity: 0.95; max-width: 600px; margin: 0 auto; }
+        
+        .resources-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .filter-bar {
+            background: white;
+            border-radius: 60px;
+            padding: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 16px 24px;
+            border: 2px solid #e5e7eb;
+            border-radius: 40px;
+            font-size: 16px;
+            background: #f5f5f5;
+            transition: all 0.3s;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+        
+        .lists-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .list-category {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            user-select: none;
+        }
+        
+        .category-header:hover {
+            background: linear-gradient(135deg, #e5e7fa 0%, #b3bfd2 100%);
+        }
+        
+        .category-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .category-icon { font-size: 28px; }
+        .category-count { background: rgba(0,0,0,0.1); padding: 4px 12px; border-radius: 20px; font-size: 14px; }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            padding: 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        
+        .list-category.open .items-grid {
+            max-height: 3000px;
+        }
+        
+        .list-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+        
+        .list-item:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+            border-color: #667eea;
+        }
+        
+        .back-home {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .back-home:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .resources-hero h1 { font-size: 1.75rem; }
+            .items-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .category-header h2 { font-size: 1.2rem; }
+            .filter-bar { top: 70px; }
+        }
+        
+        @media (max-width: 480px) {
+            .items-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            .list-item { font-size: 12px; padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">📧</span>
+                    <span>RE<span class="gradient-text">Email</span>Lists</span>
+                </a>
+                <a href="index.html" class="back-home">← Back to Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="resources-hero">
+        <h1>📚 The Complete Vault</h1>
+        <p>Every real estate email list we've got. Investors, agents, cash buyers - it's all here.</p>
+    </div>
+
+    <div class="resources-container">
+        <div class="filter-bar">
+            <input type="text" id="filterSearch" class="filter-input" placeholder="🔍 Filter lists... (e.g., 'Texas', 'Investor')" autocomplete="off">
+        </div>
+        
+        <div class="lists-grid" id="listsGrid">
+            <div class="list-category" data-category="investor-states">
+                <div class="category-header">
+                    <h2><span class="category-icon">💰</span> Investor Lists by State</h2>
+                    <span class="category-count">50 states</span>
+                </div>
+                <div class="items-grid" id="investorStatesGrid"></div>
+            </div>
+            
+            <div class="list-category" data-category="investor-cities">
+                <div class="category-header">
+                    <h2><span class="category-icon">🏙️</span> Investor Lists by City</h2>
+                    <span class="category-count">70+ cities</span>
+                </div>
+                <div class="items-grid" id="investorCitiesGrid"></div>
+            </div>
+            
+            <div class="list-category" data-category="agent-states">
+                <div class="category-header">
+                    <h2><span class="category-icon">🏠</span> Residential Agents by State</h2>
+                    <span class="category-count">50 states</span>
+                </div>
+                <div class="items-grid" id="agentStatesGrid"></div>
+            </div>
+            
+            <div class="list-category" data-category="cash-buyers">
+                <div class="category-header">
+                    <h2><span class="category-icon">💵</span> Cash Buyers by State</h2>
+                    <span class="category-count">50 states</span>
+                </div>
+                <div class="items-grid" id="cashBuyersGrid"></div>
+            </div>
+            
+            <div class="list-category" data-category="commercial">
+                <div class="category-header">
+                    <h2><span class="category-icon">🏢</span> Commercial Real Estate</h2>
+                    <span class="category-count">12 categories</span>
+                </div>
+                <div class="items-grid" id="commercialGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/resources.js"></script>
+</body>
+</html>

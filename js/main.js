@@ -1,584 +1,401 @@
 // ============================================
-// REAL ESTATE EMAIL LISTS - MAIN JAVASCRIPT
+// MAIN APPLICATION - FULLY DEBUGGED
 // ============================================
 
-// Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
     'use strict';
     
-    // ============================================
-    // DATA LISTS
-    // ============================================
-    
-    const investorStates = [
-        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
-        "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
-        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
-        "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
-        "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
-        "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", 
-        "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", 
-        "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", 
-        "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
-        "Wisconsin", "Wyoming"
-    ];
-    
-    const investorCities = [
-        "Albuquerque NM", "Atlanta GA", "Baltimore MD", "Boston MA", "Chicago IL", 
-        "Columbus OH", "Denver CO", "Fayetteville NC", "Honolulu HI", "Indianapolis IN", 
-        "Knoxville TN", "Little Rock AR", "Madison WI", "Milwaukee WI", "Montgomery AL", 
-        "New York NY", "Omaha NE", "Raleigh NC", "Rochester NY", "Seattle WA", 
-        "Tacoma WA", "Toledo OH", "Amarillo TX", "Augusta GA", "Birmingham AL", 
-        "Charlotte NC", "Cleveland OH", "Dallas Fort Worth TX", "Detroit MI", 
-        "Fort Wayne IN", "Houston TX", "Jacksonville FL", "Laredo TX", "Louisville KY", 
-        "Memphis TN", "Minneapolis MN", "Nashville TN", "Newark NJ", "Philadelphia PA", 
-        "Reno NV", "Salt Lake City UT", "Shreveport LA", "Tallahassee FL", "Tucson AZ", 
-        "Washington DC", "Anchorage AK", "Austin TX", "Boise ID", "Chesapeake VA", 
-        "Colorado Springs CO", "Des Moines IA", "El Paso TX", "Grand Rapids MI", 
-        "Huntsville AL", "Kansas City MO", "Las Vegas NV", "Lubbock TX", "Miami FL", 
-        "Mobile AL", "New Orleans LA", "Oklahoma City OK", "Phoenix AZ", "Richmond VA", 
-        "San Antonio TX", "Spokane WA", "Tampa FL", "Virginia Beach VA", "Wichita KS"
-    ];
-    
-    const agentStates = [
-        "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
-        "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
-        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
-        "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
-        "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
-        "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", 
-        "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", 
-        "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", 
-        "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
-        "Wisconsin", "Wyoming"
-    ];
-    
-    // ============================================
-    // HELPER FUNCTIONS
-    // ============================================
-    
-    // Populate grid elements
-    function populateGrid(elementId, items, prefix, icon = 'fa-users') {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-        
-        items.forEach(item => {
-            const link = document.createElement('a');
-            link.href = `#?list=${prefix}&location=${encodeURIComponent(item)}`;
-            link.innerHTML = `<i class="fas ${icon}"></i> ${item}`;
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log(`Selected: ${prefix} - ${item}`);
-                // Here you would redirect to the actual list page
-                // window.location.href = `/lists/${prefix}/${encodeURIComponent(item)}`;
-                showNotification(`Loading ${prefix} for ${item}...`, 'info');
-            });
-            container.appendChild(link);
-        });
+    // Wait for DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
     
-    // Show notification (toast)
-    function showNotification(message, type = 'info') {
-        // Create notification element if it doesn't exist
-        let notification = document.querySelector('.notification-toast');
-        if (!notification) {
-            notification = document.createElement('div');
-            notification.className = 'notification-toast';
-            document.body.appendChild(notification);
-            
-            // Add styles dynamically
-            const style = document.createElement('style');
-            style.textContent = `
-                .notification-toast {
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    background: #333;
-                    color: white;
-                    padding: 12px 20px;
-                    border-radius: 8px;
-                    z-index: 10000;
-                    opacity: 0;
-                    transform: translateY(20px);
-                    transition: all 0.3s ease;
-                    pointer-events: none;
-                    font-size: 14px;
-                    max-width: 300px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                }
-                .notification-toast.show {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-                .notification-toast.success {
-                    background: #28a745;
-                }
-                .notification-toast.error {
-                    background: #dc3545;
-                }
-                .notification-toast.info {
-                    background: #17a2b8;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        notification.textContent = message;
-        notification.className = `notification-toast ${type} show`;
-        
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
+    function init() {
+        initMobileMenu();
+        initCountUp();
+        initSearch();
+        initPricingToggle();
+        initTestimonialsSlider();
+        initModal();
+        initFormSubmit();
+        initSmoothScroll();
+        setCurrentYear();
+        initNavActive();
+        initGetStartedButtons();
     }
     
-    // Set current year in footer
-    function setCurrentYear() {
-        const yearElement = document.getElementById('currentYear');
-        if (yearElement) {
-            yearElement.textContent = new Date().getFullYear();
-        }
-    }
-    
-    // Mobile menu toggle
+    // Mobile Menu
     function initMobileMenu() {
-        const toggleBtn = document.querySelector('.mobile-menu-toggle');
-        const navLinks = document.getElementById('navLinks');
+        const menuBtn = document.getElementById('menuBtn');
+        const navMenu = document.getElementById('navMenu');
         
-        if (toggleBtn && navLinks) {
-            toggleBtn.addEventListener('click', function() {
-                const expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
-                this.setAttribute('aria-expanded', expanded);
-                navLinks.classList.toggle('active');
-                this.innerHTML = expanded ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-            });
-        }
-    }
-    
-    // Sticky CTA on mobile scroll
-    function initStickyCta() {
-        const stickyCta = document.getElementById('stickyCta');
-        if (!stickyCta) return;
-        
-        let lastScrollY = window.scrollY;
-        let isVisible = false;
-        
-        window.addEventListener('scroll', function() {
-            const currentScrollY = window.scrollY;
-            const scrollPercentage = currentScrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            
-            // Show when scrolled past 50% on mobile
-            if (window.innerWidth <= 768 && scrollPercentage > 0.5 && !isVisible) {
-                stickyCta.classList.add('visible');
-                isVisible = true;
-            } else if ((window.innerWidth > 768 || scrollPercentage <= 0.5) && isVisible) {
-                stickyCta.classList.remove('visible');
-                isVisible = false;
-            }
-        });
-        
-        // Close sticky CTA
-        const closeBtn = stickyCta.querySelector('.close-sticky');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
+        if (menuBtn && navMenu) {
+            menuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                stickyCta.classList.remove('visible');
-                isVisible = false;
+                menuBtn.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                const isExpanded = navMenu.classList.contains('active');
+                menuBtn.setAttribute('aria-expanded', isExpanded);
             });
-        }
-        
-        // CTA click - open modal
-        const ctaContent = stickyCta.querySelector('.sticky-cta-content');
-        if (ctaContent) {
-            ctaContent.addEventListener('click', function(e) {
-                if (!e.target.closest('.close-sticky')) {
-                    openSampleModal();
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    menuBtn.classList.remove('active');
                 }
             });
         }
     }
     
-    // Modal functionality
-    const modal = document.getElementById('sampleModal');
-    
-    function openSampleModal() {
-        if (modal) {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-        }
+    // Count Up Animation
+    function initCountUp() {
+        const counters = document.querySelectorAll('.stat-number');
+        if (!counters.length) return;
+        
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    if (isNaN(target)) return;
+                    
+                    let current = 0;
+                    const increment = target / 60;
+                    const duration = 2000;
+                    const stepTime = duration / 60;
+                    
+                    const updateCounter = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = target.toLocaleString();
+                            clearInterval(updateCounter);
+                        } else {
+                            counter.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }, stepTime);
+                    
+                    obs.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        counters.forEach(counter => observer.observe(counter));
     }
     
-    function closeSampleModal() {
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        }
+    // Search Functionality - FIXED
+    function initSearch() {
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('mainSearch');
+        
+        if (!searchBtn || !searchInput) return;
+        
+        const performSearch = () => {
+            const query = searchInput.value.trim();
+            if (query && query.length > 0) {
+                showNotification(`🔍 Searching for "${query}"...`, 'info');
+                // Store search query and redirect to resources page
+                sessionStorage.setItem('searchQuery', query);
+                window.location.href = 'resources.html';
+            } else {
+                showNotification('✨ Enter a city or state to get started!', 'warning');
+                searchInput.style.border = '2px solid #fbbf24';
+                setTimeout(() => {
+                    searchInput.style.border = 'none';
+                }, 1500);
+            }
+        };
+        
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
     }
     
+    // Pricing Toggle - FIXED
+    function initPricingToggle() {
+        const toggleBtns = document.querySelectorAll('.toggle-btn');
+        const oneTimeCard = document.querySelector('.pricing-card[data-plan-type="one-time"]');
+        const monthlyCard = document.querySelector('.pricing-card[data-plan-type="monthly"]');
+        
+        if (!toggleBtns.length || !oneTimeCard || !monthlyCard) return;
+        
+        const showPlan = (plan) => {
+            if (plan === 'one-time') {
+                oneTimeCard.style.display = 'block';
+                monthlyCard.style.display = 'block';
+                monthlyCard.style.order = '2';
+            } else {
+                oneTimeCard.style.display = 'block';
+                monthlyCard.style.display = 'block';
+                monthlyCard.style.order = '1';
+            }
+        };
+        
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const plan = btn.getAttribute('data-plan');
+                toggleBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                showPlan(plan);
+            });
+        });
+        
+        // Ensure both visible initially
+        showPlan('one-time');
+    }
+    
+    // Testimonials Slider - FIXED
+    function initTestimonialsSlider() {
+        const track = document.getElementById('testimonialTrack');
+        const testimonials = document.querySelectorAll('.testimonial');
+        const dotsContainer = document.getElementById('sliderDots');
+        
+        if (!track || !testimonials.length || !dotsContainer) return;
+        
+        let currentIndex = 0;
+        let autoSlideInterval;
+        let isMobile = window.innerWidth <= 768;
+        
+        // Create dots
+        testimonials.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+        
+        function goToSlide(index) {
+            if (isMobile) {
+                currentIndex = Math.min(Math.max(0, index), testimonials.length - 1);
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                updateDots();
+            }
+        }
+        
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        function nextSlide() {
+            if (isMobile) {
+                currentIndex = (currentIndex + 1) % testimonials.length;
+                goToSlide(currentIndex);
+            }
+        }
+        
+        function startAutoSlide() {
+            if (autoSlideInterval) clearInterval(autoSlideInterval);
+            if (isMobile && testimonials.length > 1) {
+                autoSlideInterval = setInterval(nextSlide, 5000);
+            }
+        }
+        
+        function handleResize() {
+            isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                track.style.transition = 'transform 0.5s ease';
+                goToSlide(currentIndex);
+                startAutoSlide();
+            } else {
+                if (autoSlideInterval) clearInterval(autoSlideInterval);
+                track.style.transform = 'none';
+                track.style.transition = 'none';
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    }
+    
+    // Modal Functionality - FIXED
     function initModal() {
+        const modal = document.getElementById('sampleModal');
+        const openModalBtns = document.querySelectorAll('#openModalBtn, .btn-get-started, #navFreeSampleBtn');
+        const closeBtn = document.querySelector('.modal-close');
+        
         if (!modal) return;
         
-        // Open modal when clicking CTA buttons
-        const openButtons = document.querySelectorAll('#openSampleModal, .get-quote, .nav-cta');
-        openButtons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openSampleModal();
-            });
+        const openModal = (e) => {
+            if (e) e.preventDefault();
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+        
+        const closeModal = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+        
+        openModalBtns.forEach(btn => {
+            if (btn) btn.addEventListener('click', openModal);
         });
         
-        // Close modal when clicking X
-        const closeBtn = modal.querySelector('.modal-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', closeSampleModal);
-        }
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
         
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeSampleModal();
-            }
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
         });
         
-        // Close on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.style.display === 'block') {
-                closeSampleModal();
-            }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
         });
     }
     
-    // Handle sample form submission
-    function initSampleForm() {
+    // Form Submit - FIXED
+    function initFormSubmit() {
         const form = document.getElementById('sampleForm');
         if (!form) return;
         
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(form);
-            const data = {
-                fullName: formData.get('full_name'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                targetLocation: formData.get('target_location'),
-                targetType: formData.get('target_type')
-            };
+            const fullName = document.getElementById('fullName')?.value.trim();
+            const email = document.getElementById('email')?.value.trim();
+            const targetLocation = document.getElementById('targetLocation')?.value.trim();
             
-            // Basic validation
-            if (!data.fullName || !data.email || !data.targetLocation) {
-                showNotification('Please fill in all required fields.', 'error');
+            if (!fullName || !email || !targetLocation) {
+                showNotification('❌ Please fill in all required fields', 'error');
                 return;
             }
             
-            if (!data.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                showNotification('Please enter a valid email address.', 'error');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('❌ Please enter a valid email address', 'error');
                 return;
             }
             
-            // Here you would send the data to your server
-            console.log('Form submitted:', data);
+            const submitBtn = form.querySelector('.btn-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ Sending...';
+            submitBtn.disabled = true;
             
-            // Show success message
-            showNotification('Thank you! Your 250 free leads will be sent shortly.', 'success');
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Reset form and close modal
+            showNotification('🎉 Awesome! Check your email for 250 free leads!', 'success');
             form.reset();
-            closeSampleModal();
             
-            // In production, you would send AJAX request to your endpoint
-            // fetch('/api/sample-leads', {
-            //     method: 'POST',
-            //     headers: {'Content-Type': 'application/json'},
-            //     body: JSON.stringify(data)
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     if (data.success) {
-            //         showNotification('Success! Check your email.', 'success');
-            //         form.reset();
-            //         closeSampleModal();
-            //     }
-            // })
-            // .catch(error => {
-            //     showNotification('Something went wrong. Please try again.', 'error');
-            // });
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            const modal = document.getElementById('sampleModal');
+            if (modal) modal.style.display = 'none';
+            document.body.style.overflow = '';
         });
     }
     
-    // Handle search form
-    function initSearchForm() {
-        const searchForm = document.getElementById('searchForm');
-        if (!searchForm) return;
-        
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const searchInput = document.getElementById('cityState');
-            const searchTerm = searchInput.value.trim();
-            
-            if (!searchTerm) {
-                showNotification('Please enter a city and state to search.', 'error');
-                return;
-            }
-            
-            showNotification(`Searching for real estate leads in "${searchTerm}"...`, 'info');
-            
-            // Here you would redirect to search results or process the search
-            // window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
-            
-            // For demo, just log
-            console.log('Search:', searchTerm);
+    // Get Started Buttons
+    function initGetStartedButtons() {
+        const getStartedBtns = document.querySelectorAll('.btn-get-started, .btn-primary');
+        getStartedBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const modal = document.getElementById('sampleModal');
+                if (modal && btn.classList.contains('btn-get-started')) {
+                    e.preventDefault();
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
         });
     }
     
-    // Smooth scroll for anchor links
+    // Smooth Scroll
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#' || targetId === '') return;
+                const href = this.getAttribute('href');
+                if (href === '#') return;
                 
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
+                const targetId = href.substring(1);
+                const target = document.getElementById(targetId);
+                
+                if (target) {
                     e.preventDefault();
-                    targetElement.scrollIntoView({
+                    target.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
                     
-                    // Update URL without jumping
-                    history.pushState(null, null, targetId);
+                    // Close mobile menu
+                    const navMenu = document.getElementById('navMenu');
+                    const menuBtn = document.getElementById('menuBtn');
+                    if (navMenu && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        menuBtn?.classList.remove('active');
+                    }
                 }
             });
         });
     }
     
-    // Add loading state to buttons
-    function initButtonLoading() {
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                if (this.classList.contains('loading')) return;
+    // Current Year
+    function setCurrentYear() {
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+    }
+    
+    // Active Nav Link
+    function initNavActive() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+        
+        if (!sections.length || !navLinks.length) return;
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const scrollPos = window.scrollY + 150;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
                 
-                // Don't add loading if it's a link or has no form
-                if (this.getAttribute('href') === '#' || this.getAttribute('href') === '') {
-                    const originalText = this.innerHTML;
-                    this.classList.add('loading');
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-                    
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.classList.remove('loading');
-                    }, 1500);
+                if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+                    current = section.getAttribute('id');
                 }
-            });
-        });
-        
-        // Add loading styles
-        const style = document.createElement('style');
-        style.textContent = `
-            .btn.loading {
-                opacity: 0.7;
-                cursor: not-allowed;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    // Intersection Observer for fade-in animations
-    function initAnimations() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-        
-        // Observe sections and cards
-        document.querySelectorAll('section, .feature-card, .pricing-card, .testimonial-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-        
-        // Add animate-in class styles
-        const style = document.createElement('style');
-        style.textContent = `
-            .animate-in {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    // Price slider/dynamic update (optional)
-    function initPriceCalculator() {
-        // This would be more complex with actual sliders, but for now
-        const priceAmounts = document.querySelectorAll('.price .amount');
-        priceAmounts.forEach(price => {
-            const min = parseFloat(price.getAttribute('data-min'));
-            const max = parseFloat(price.getAttribute('data-max'));
-            if (min && max) {
-                const avg = ((min + max) / 2).toFixed(2);
-                price.textContent = avg;
-            }
-        });
-    }
-    
-    // Track user interactions (analytics)
-    function initAnalytics() {
-        // Track button clicks
-        const trackEvents = ['click', 'submit'];
-        const trackSelectors = ['.btn', 'form', 'a', '.state-grid a', '.city-grid a'];
-        
-        trackSelectors.forEach(selector => {
-            document.querySelectorAll(selector).forEach(el => {
-                el.addEventListener('click', function(e) {
-                    const eventData = {
-                        event: 'user_interaction',
-                        element: this.tagName,
-                        class: this.className,
-                        text: this.textContent?.slice(0, 100),
-                        url: window.location.href,
-                        timestamp: new Date().toISOString()
-                    };
-                    
-                    // In production, send to analytics
-                    console.log('Analytics:', eventData);
-                    
-                    // If using Google Analytics
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'click', {
-                            'event_category': 'engagement',
-                            'event_label': this.textContent?.slice(0, 50)
-                        });
-                    }
-                });
-            });
-        });
-    }
-    
-    // Lazy load images (if any)
-    function initLazyLoad() {
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        const src = img.getAttribute('data-src');
-                        if (src) {
-                            img.src = src;
-                            img.removeAttribute('data-src');
-                        }
-                        imageObserver.unobserve(img);
-                    }
-                });
             });
             
-            document.querySelectorAll('img[data-src]').forEach(img => {
-                imageObserver.observe(img);
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href').substring(1);
+                if (href === current) {
+                    link.classList.add('active');
+                }
             });
-        }
+        });
     }
     
-    // ============================================
-    // INITIALIZATION
-    // ============================================
+    // Toast Notifications
+    window.showNotification = showNotification;
     
-    // Populate all grids
-    populateGrid('investorStateGrid', investorStates, 'investor-state', 'fa-chart-line');
-    populateGrid('investorCityGrid', investorCities, 'investor-city', 'fa-building');
-    populateGrid('agentStateGrid', agentStates, 'agent-state', 'fa-user-tie');
-    
-    // Initialize all components
-    setCurrentYear();
-    initMobileMenu();
-    initStickyCta();
-    initModal();
-    initSampleForm();
-    initSearchForm();
-    initSmoothScroll();
-    initButtonLoading();
-    initAnimations();
-    initPriceCalculator();
-    initAnalytics();
-    initLazyLoad();
-    
-    // Add CSS for animations if not present
-    const additionalStyles = document.createElement('style');
-    additionalStyles.textContent = `
-        /* Additional animations */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+    function showNotification(message, type = 'info') {
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) existingToast.remove();
         
-        .btn-primary {
-            animation: none;
-        }
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="toast-content">
+                <span>${message}</span>
+                <button class="toast-close">×</button>
+            </div>
+        `;
         
-        .btn-primary:hover {
-            animation: pulse 0.3s ease;
-        }
+        document.body.appendChild(toast);
         
-        /* Form validation styles */
-        .form-group input:invalid:focus {
-            border-color: var(--error);
-        }
+        const closeBtn = toast.querySelector('.toast-close');
+        closeBtn.addEventListener('click', () => toast.remove());
         
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--bg-light);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-        
-        /* Selection styling */
-        ::selection {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        /* Focus visible for better accessibility */
-        :focus-visible {
-            outline: 3px solid var(--primary-color);
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
-        
-        /* Reduce motion preference */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    `;
-    document.head.appendChild(additionalStyles);
-    
-    console.log('Real Estate Email Lists - Front-end initialized successfully');
-});
+        setTimeout(() => {
+            if (toast && toast.parentNode) toast.remove();
+        }, 4000);
+    }
+})();
